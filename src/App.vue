@@ -1,8 +1,13 @@
 <template>
-  <main class="dashboard">
 
+  <main class="dashboard">
+<div>
+<p>Puntaje</p><p id="puntaje"></p>
+</div>
     <div class="selected-card">
-    <Card :character="chosenCharacter" :closed="isClosed" />
+    <Card :character="chosenCharacter" :closed="isClosed" 
+     @click="reinicio()"
+     />
     </div>
 
     <div class="options">
@@ -18,6 +23,7 @@
   </main>
 </template>
 <script>
+  let contador =0;
     import { getCharacters, randomNumber } from "./utils/api";
     import Card from "./components/Card";
 
@@ -37,25 +43,42 @@
 },
         
         async beforeCreate() {
-    const characters = await getCharacters();
+    
+const characters = await getCharacters();
     const chosenCharacter = characters[ randomNumber(0, 2) ];
     this.options=characters;
     this.chosenCharacter = chosenCharacter;
-
 },
 methods: {
+  async reinicio(){
+    this.isClosed = true;
+const characters = await getCharacters();
+    const chosenCharacter = characters[ randomNumber(0, 2) ];
+    this.options=characters;
+    this.chosenCharacter = chosenCharacter;
+    
+  },
+  count(contador){
+  contador++
+  document.querySelector("#puntaje").innerHTML=contador;
+  return contador
+},
 
     validate(chosenCharacter) {
 
         if (chosenCharacter === this.chosenCharacter.id) {
         this.isClosed = false;
-        alert("¡Lo has adivinado!");
+        alert("¡Lo has adivinado! Presiona la carta de arriba para volver a empezar");
+        contador=this.count(contador)
+        
+       
     }
     else {
         alert("Personaje incorrecto, inténtalo de nuevo");
     }
 
 }
+
 
     }
 
@@ -72,6 +95,10 @@ methods: {
 }
 body {
   font-family: Arial, Helvetica, sans-serif;
+}
+p{
+  color:white;
+  font-size:25px
 }
 .dashboard {
   display: flex;
