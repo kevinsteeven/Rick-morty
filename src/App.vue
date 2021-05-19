@@ -97,7 +97,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 p{
-  color:white;
+  color:#023047;
   font-size:25px
 }
 .dashboard {
